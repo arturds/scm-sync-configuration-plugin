@@ -165,6 +165,7 @@ public abstract class ScmSyncConfigurationBaseTest {
         ScmSyncConfigurationPOJO config = new DefaultSSCPOJO();
         config.setScm(scmContext.getScm());
         config.setScmRepositoryUrl(scmContext.getScmRepositoryUrl());
+        config.setDefaultBranch(scmContext.getDefaultBranch());
         ScmSyncConfigurationPlugin.getInstance().loadData(config);
         ScmSyncConfigurationPlugin.getInstance().init();
 
