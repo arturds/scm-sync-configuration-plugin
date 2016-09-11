@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+
+  jenkins:
+    container_name: jenkins-scm
+    image: netoht/jenkins-scm:latest
+    volumes:
+      - "./gitconfig:/var/jenkins_home/.gitconfig"
+    ports:
+      - "8080:8080"
+    environment:
+      - "SCM_REPOSITORY=scm:git:https://netoht:xxxxxxx@github.com/netoht/scm-sync-test.git"
+      - "SCM_BRANCH=master"
