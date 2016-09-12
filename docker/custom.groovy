@@ -9,6 +9,7 @@ def scmConfiguration = new File("/var/jenkins_home/scm-sync-configuration.xml")
 def scmCloneRepository = new File("/var/jenkins_home/scm-sync-configuration/checkoutConfiguration/")
 def currentBranch = scmBranch
 def branchMsgWarn = ""
+def scmWasConfigured = null
 
 if (scmCloneRepository.exists()) {
     currentBranch = "git rev-parse --abbrev-ref HEAD".execute(null, scmCloneRepository).text
@@ -32,6 +33,9 @@ if (!scmConfiguration.exists()) {
     scmConfiguration.withWriter('UTF-8') { writer ->
         writer.write(xml)
     }
+    scmWasConfigured = true
+} else {
+    scmWasConfigured = false
 }
 
 println """
@@ -44,4 +48,6 @@ println """
 """
 scmSyncPlugin.start()
 scmSyncPlugin.reloadAllFilesFromScm()
-Jenkins.instance.doReload()
+if(scmWasConfigured) {
+    Jenkins.instance.restart()
+}
