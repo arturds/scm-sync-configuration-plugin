@@ -38,10 +38,16 @@ if (!scmConfiguration.exists()) {
     scmWasConfigured = false
 }
 
+def scmRepositoryHidden = scmRepository
+def passwordGroup = (scmRepositoryHidden =~  /\w+:\w+:http[s]?:\/\/\w+:(.+)@.*/)
+if (passwordGroup.size() > 0 && passwordGroup[0].size() > 1) {
+    scmRepositoryHidden = scmRepositoryHidden.replaceAll(passwordGroup[0][1], "******")
+}
+
 println """
 ------------------------------------------------------------------------------
     SCM-SYNC-CONFIGURATION STARTUP:
-        - SCM_REPOSITORY=${scmRepository}
+        - SCM_REPOSITORY=${scmRepositoryHidden}
         - SCM_BRANCH=${currentBranch} ${branchMsgWarn}
     SCM-SYNC-CONFIGURATION RELOAD FILES...
 ------------------------------------------------------------------------------
